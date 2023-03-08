@@ -15,7 +15,7 @@ public class UserDriver {
         System.out.println("[0] - exit");
         int i = scanner.nextInt();
         chek:
-        while ( i!= 0) {
+        while (i != 0) {
             System.out.println("Choose operation: ");
             System.out.println("[1] - add new user");
             System.out.println("[2] - delete existing user");
@@ -31,59 +31,78 @@ public class UserDriver {
                 case 1 -> {
                     System.out.println("Enter login: ");
                     String log = scanner.next();
-                    System.out.println("Enter password: ");
-                    String pass = scanner.next();
-                    User user = new User(log, pass);
+                    boolean isExist = false;
                     for (User us : users) {
-                        if (!us.getLogin().equals(log)) {
-                            users.add(user);
-                            System.out.println("User add");
-                            break;
-                        } else {
-                            System.out.println("User with this login already exist");
-                            break;
+                        if (us.getLogin().equals(log)) {
+                            isExist = true;
+                            continue ;
                         }
+                    }
+                    if (isExist) {
+                        System.out.println("User with this login already exist");
+                        break;
+                    } else {
+                        System.out.println("Enter password: ");
+                        String pass = scanner.next();
+                        User user = new User(log, pass);
+                        users.add(user);
+                        System.out.println("User add");
+                        break;
                     }
                 }
                 case 2 -> {
                     System.out.println("Enter user's login to delete: ");
                     String log = scanner.next();
+                    boolean no = false;
                     for (User us : users) {
                         if (us.getLogin().equals(log)) {
                             users.remove(us);
+                            no = true;
+                            System.out.println("User deleted");
                             break;
                         }
-                        else {
-                            System.out.println("User not found");
-                        }
+                    }
+                    if (!no) {
+                        System.out.println("User with login [" + log + "] not found");
                     }
                     break;
                 }
+
                 case 3 -> {
                     System.out.println("Enter user's login to search: ");
                     String log = scanner.next();
+                    boolean no = false;
                     for (User us : users) {
                         if (us.getLogin().equals(log)) {
                             if (users.contains(us)) {
                                 System.out.println("Exist - " + us);
+                                no = true;
                                 break;
                             }
 
                         }
                     }
-                    System.out.println("User with login "+log+" not found");
+                    if (!no){
+                        System.out.println("User with login [" + log + "] not found");
+                    }
                     break;
                 }
                 case 4 -> {
                     System.out.println("Enter user's login to search: ");
                     String log = scanner.next();
+                    boolean no = false;
                     for (User us : users) {
                         if (us.getLogin().equals(log)) {
                             System.out.println("Enter new login: ");
                             String newLog = scanner.next();
                             users.set(users.indexOf(us), new User(newLog, us.getPassword()));
+                            System.out.println("Login changed");
+                            no = true;
                             break;
                         }
+                    }
+                    if (!no){
+                        System.out.println("User with login [" + log + "] not found");
                     }
 
                     break;
@@ -91,15 +110,20 @@ public class UserDriver {
                 case 5 -> {
                     System.out.println("Enter user's login to search: ");
                     String log = scanner.next();
+                    boolean no = false;
                     for (User us : users) {
                         if (us.getLogin().equals(log)) {
                             System.out.println("Enter new password: ");
                             String newPass = scanner.next();
-                            users.set(users.indexOf(us) , new User(us.getLogin(), newPass));
+                            users.set(users.indexOf(us), new User(us.getLogin(), newPass));
+                            System.out.println("Password changed");
+                            no = true;
                             break;
                         }
                     }
-
+                    if (!no){
+                        System.out.println("User with login [" + log + "] not found");
+                    }
                     break;
 
                 }
@@ -107,7 +131,6 @@ public class UserDriver {
                     System.out.println("Select action");
                     break;
                 }
-
             }
         }
         System.out.println(users);
